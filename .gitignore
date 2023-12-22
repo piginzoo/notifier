@@ -1,0 +1,7 @@
+conf/config.yml
+conf/config.product.yml
+.DS_Store
+logs/
+debug/
+.idea/
+__pycache__/
