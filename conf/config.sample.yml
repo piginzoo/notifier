@@ -2,14 +2,13 @@ weixin:
     signal: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
     detail: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
     error: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+    day_max: 500
 email:
     host: 'smtp.qq.com'
     uid: 'xxxxxx@qq.com'
     pwd: 'xxxxxxxxxxxxx'
     email: 'xxxxxx@qq.com,xxxxx@qq.com'
+    day_max: 100
 plusplus:
     token: 'xxxxxxxxxxxxxx'
-qyweixin:
-    agent_id: 'xxxxxxx'
-    secret: 'xxxxxxxxxxxxxxxxxx'
-    corp_id: 'xxxxxxxxxxxxxxxxxx'
+    day_max: 200

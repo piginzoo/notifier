@@ -1,2 +1,11 @@
-# notifier
-create a online messager to notify by emal, weixin
+# 说明
+
+这是一个简单的发送接口，可以发送邮件、微信（通过plusplus实现）、企业微信。
+目前主要用于，量化消息的推送。
+
+为了统一，我设计了3个组：info，error，signal，分别用于：
+- info：一般的成交消息，细节等，用于自己查看交易信息
+- signal：只推送简洁的消息，用于其他朋友订阅信号用
+- error：一些异常和错误的推送
+
+
