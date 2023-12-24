@@ -13,6 +13,11 @@ SIGNAL = 'signal'
 ERROR = 'error'
 INFO = 'info'
 
+CHANNEL_WEIXIN = 'weixin'
+CHANNEL_EMAIL = 'email'
+CHANNEL_PLUSPLUS = 'plusplus'
+CHANNEL_ALL = 'all'
+
 
 def _init(conf):
     global _SENDERS
@@ -24,17 +29,28 @@ def _init(conf):
     }
 
 
-def send(title, msg, group):
-    if group not in [SIGNAL,ERROR,INFO]:
-        logger.warning("发送的目标群组，必须是%r之一",[SIGNAL,ERROR,INFO])
+def send(title, msg, group, channel=CHANNEL_ALL):
+    if group not in [SIGNAL, ERROR, INFO]:
+        logger.warning("发送的目标群组，必须是%r之一", [SIGNAL, ERROR, INFO])
+        return
+
+    if channel not in [CHANNEL_ALL, CHANNEL_WEIXIN, CHANNEL_EMAIL, CHANNEL_PLUSPLUS]:
+        logger.warning("目标发送的渠道[%s]，必须是%r之一", channel,
+                       [CHANNEL_ALL, CHANNEL_WEIXIN, CHANNEL_EMAIL, CHANNEL_PLUSPLUS])
         return
 
     global _SENDERS
     for name, messager in _SENDERS.items():
-        # 为了防止被封，设置一个当日计数器，超过不发
-        if messager.get_count() > messager.conf[name].day_max: return
-        if messager.send(title, msg, group):
-            messager.count()
+
+        # 如果渠道匹配，或者，渠道为全渠道，则发送
+        if channel == name or channel == CHANNEL_ALL:
+            # 为了防止被封，设置一个当日计数器，超过不发
+            if messager.get_count() > messager.conf[name].day_max: return
+
+            # 发送，如果成功发送，则计数
+            if messager.send(title, msg, group):
+                messager.count()
+                logger.debug("渠道[%s]消息总数：%d个", name, messager.get_count())
 
 
 class Messager():
@@ -149,11 +165,12 @@ class QYWeixinMessager(Messager):
                 # @all向该企业应用的全部成员发送；指定接收消息的成员，成员ID列表（多个接收者用‘|’分隔，最多支持1000个）
                 # 具体类型可以查阅官方网站：https://developer.work.weixin.qq.com/document/path/90236
                 # 代码支持类型：文本消息（text），文本卡片消息（textcard），图文消息（news），markdown消息（markdown）
+                # content    是    文本内容，最长不超过4096个字节，必须是utf8编码
                 "touser": "@all",
                 "msgtype": 'text',
                 "agentid": agent_id,
                 "text": {
-                    "content": f"标题:{title}:\n内容:\n{msg[:2040]}"  # content    是    文本内容，最长不超过2048个字节，必须是utf8编码
+                    "content": f"标题:{title}:\n内容:\n{msg[:4096]}"
                 }
             }
             # headers = {'Content-Type': 'application/json'}
@@ -173,12 +190,13 @@ class WeixinMessager(Messager):
         接口文档：https://developer.work.weixin.qq.com/document/path/91770?version=4.0.6.90540
         """
         try:
-            logger.info("开始推送企业微信[类别:%s]消息", group)
+            # logger.info("开始推送企业微信[类别:%s]消息", group)
             url = self.conf['weixin'][group]
+            # content    是    文本内容，最长不超过4096个字节，必须是utf8编码
             post_data = {
                 "msgtype": "text",
                 "text": {
-                    "content": f"标题:{title}:\n内容:\n{msg[:2040]}"  # content    是    文本内容，最长不超过2048个字节，必须是utf8编码
+                    "content": f"标题:{title}:\n内容:\n{msg[:4096]}"
                 }
             }
             headers = {'Content-Type': 'application/json'}
