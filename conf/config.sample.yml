@@ -2,7 +2,7 @@ weixin:
     signal: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
     detail: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
     error: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-    day_max: 500
+    day_max: 1000
 email:
     host: 'smtp.qq.com'
     uid: 'xxxxxx@qq.com'

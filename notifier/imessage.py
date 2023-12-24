@@ -48,9 +48,15 @@ def send(title, msg, group, channel=CHANNEL_ALL):
             if messager.get_count() > messager.conf[name].day_max: return
 
             # 发送，如果成功发送，则计数
-            if messager.send(title, msg, group):
-                messager.count()
-                logger.debug("渠道[%s]消息总数：%d个", name, messager.get_count())
+            if type(msg)==list:
+                for m in msg:
+                    if messager.send(title, m, group):
+                        messager.count()
+                        logger.debug("渠道[%s]消息总数：%d个", name, messager.get_count())
+            else:
+                if messager.send(title, m, group):
+                    messager.count()
+                    logger.debug("渠道[%s]消息总数：%d个", name, messager.get_count())
 
 
 class Messager():
@@ -195,8 +201,8 @@ class WeixinMessager(Messager):
             # content    是    文本内容，最长不超过4096个字节，必须是utf8编码
             post_data = {
                 "msgtype": "text",
-                "text": {
-                    "content": f"标题:{title}:\n内容:\n{msg[:4096]}"
+                "text":{
+                    "content":f"{title}\n\n{msg[:4090-len(title)]}"
                 }
             }
             headers = {'Content-Type': 'application/json'}
