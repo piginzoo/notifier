@@ -54,7 +54,7 @@ def send(title, msg, group, channel=CHANNEL_ALL):
                         messager.count()
                         logger.debug("渠道[%s]消息总数：%d个", name, messager.get_count())
             else:
-                if messager.send(title, m, group):
+                if messager.send(title, msg, group):
                     messager.count()
                     logger.debug("渠道[%s]消息总数：%d个", name, messager.get_count())
 
