@@ -1,11 +1,13 @@
 import json
 import logging
+
+import pandas as pd
 import requests
 import smtplib
 from email.header import Header
 from email.mime.text import MIMEText
 
-from notifier.utils import today
+from notifier.utils import today, df2msg
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +55,14 @@ def send(title, msg, group, channel=CHANNEL_ALL):
                     if messager.send(title, m, group):
                         messager.count()
                         logger.debug("渠道[%s]消息总数：%d个", name, messager.get_count())
+            elif type(msg)==pd.DataFrame:
+                msgs = df2msg(msg)
+                for m in msgs:
+                    if messager.send(title, m, group):
+                        messager.count()
+                        logger.debug("渠道[%s]消息总数：%d个", name, messager.get_count())
             else:
+                assert type(msg)==str
                 if messager.send(title, msg, group):
                     messager.count()
                     logger.debug("渠道[%s]消息总数：%d个", name, messager.get_count())

@@ -5,3 +5,6 @@ logs/
 debug/
 .idea/
 __pycache__/
+build/
+dist/
+notifier.egg-info/
