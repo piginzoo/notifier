@@ -107,10 +107,10 @@ def init_logger(file=False, simple=False, log_level=logging.DEBUG):
         handler.setLevel(level=log_level)
         handler.setFormatter(formatter)
 
-def df2msg(df,max_length):
+def df2msg(df,max_length=4000):
     """
     把dataframe转成可发送的消息
-    按照max_lengthe分割消息
+    按照max_lengthe分割消息，默认是4k
     :return:
     """
     list = df.to_dict('records')

@@ -1,4 +1,4 @@
-code,action,amount,position,create_date,target_date,status,done_datetime,signal_socre
+code,action,amount,position,create_date,target_date,status,done_datetime,signal_score
 600811.SH,sell,-1,100,20231221,20231221,done,20231221134233,-1
 688179.SH,sell,-1,100,20231221,20231221,pending,,-1
 000782.SZ,sell,-1,100,20231221,20231221,done,20231221134239,-1
