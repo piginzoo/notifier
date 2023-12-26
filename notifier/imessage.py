@@ -55,7 +55,7 @@ def send(title, msg, group, channel=CHANNEL_ALL):
                     if messager.send(title, m, group):
                         messager.count()
                         logger.debug("渠道[%s]消息总数：%d个", name, messager.get_count())
-            elif type(msg)==pd.DataFrame:
+            elif isinstance(msg, pd.DataFrame):
                 msgs = df2msg(msg)
                 for m in msgs:
                     if messager.send(title, m, group):
